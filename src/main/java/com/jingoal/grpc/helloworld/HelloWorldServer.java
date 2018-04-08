@@ -18,6 +18,9 @@ public class HelloWorldServer {
   private Server server;
 
   private void start() throws IOException {
+    // 使用ServerBuilder来构建和启动服务, 通过使用forPort方法来指定监听的地址和端口
+    // 创建一个实现方法的服务GreeterImpl的实例, 并通过addService方法将该实例纳入
+    // 调用build() start()方法构建和启动rpcserver
     System.out.println("Start HelloWorldServer.");
     server = ServerBuilder.forPort(port).addService(new GreeterImpl()).build().start();
     log.info("Server started, listening on " + port);
@@ -45,20 +48,25 @@ public class HelloWorldServer {
     }
   }
 
+  /**
+   * Main launches the server from the command line.
+   */
   public static void main(String[] args) throws IOException, InterruptedException {
     final HelloWorldServer server = new HelloWorldServer();
     server.start();
     server.blockUntilShutdown();
   }
 
+  // 我们的服务GreeterImpl继承了生成抽象类GreeterGrpc.GreeterImplBase, 实现了服务的所有方法
   private class GreeterImpl extends GreeterGrpc.GreeterImplBase {
 
     @Override
     public void sayHello(HelloWorldReq request, StreamObserver<HelloWorldResp> responseObserver) {
       HelloWorldResp resp =
           HelloWorldResp.newBuilder().setMessage("hello" + request.getName()).build();
-
+      // 使用响应监视器的onNext方法返回HelloReply
       responseObserver.onNext(resp);
+      // 使用onCompleted方法指定本次调用已经完成
       responseObserver.onCompleted();
     }
 

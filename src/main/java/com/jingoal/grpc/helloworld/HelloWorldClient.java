@@ -10,11 +10,17 @@ import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
 
 public class HelloWorldClient {
+
   private static Logger log = LoggerFactory.getLogger(HelloWorldClient.class);
 
   private ManagedChannel channel;
   private GreeterGrpc.GreeterBlockingStub blockingStub;
 
+  /**
+   * Construct client connecting to HelloWorld server at {@code host:port}.
+   */
+  // 首先, 我们需要为stub创建一个grpc的channel, 指定我们连接服务端的地址和端口
+  // 使用ManagedChannelBuilder方法来创建channel
   public HelloWorldClient(String host, int port) {
     channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build();
     blockingStub = GreeterGrpc.newBlockingStub(channel);
@@ -42,8 +48,6 @@ public class HelloWorldClient {
   /**
    * Greet server. If provided, the first element of {@code args} is the name to use in the
    * greeting.
-   * 
-   * @throws InterruptedException
    */
   public static void main(String[] args) throws InterruptedException {
     HelloWorldClient client = new HelloWorldClient("localhost", 50501);
