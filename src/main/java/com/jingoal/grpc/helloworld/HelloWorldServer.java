@@ -1,13 +1,9 @@
-package com.jingoal.grpc;
+package com.jingoal.grpc.helloworld;
 
 import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.jingoal.grpc.helloworld.GreeterGrpc;
-import com.jingoal.grpc.helloworld.HelloWorldReq;
-import com.jingoal.grpc.helloworld.HelloWorldResp;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;

@@ -1,13 +1,9 @@
-package com.jingoal.grpc;
+package com.jingoal.grpc.helloworld;
 
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.jingoal.grpc.helloworld.GreeterGrpc;
-import com.jingoal.grpc.helloworld.HelloWorldReq;
-import com.jingoal.grpc.helloworld.HelloWorldResp;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;

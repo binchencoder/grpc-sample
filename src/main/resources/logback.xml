@@ -67,53 +67,22 @@
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%X{juuid}] [%X{jround}] %-5level %logger{36} -%msg%n</pattern>  
 		</layout>  
 	</appender>
-	<appender name="mongoaddremove" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!-- 下面这段注释的代码可以在日志文件超过 5MB 时进行归档，并且归档文件后缀只要是 .zip 或 .gz 就会自动压缩日志归档 -->
-        <file>logs/grpc/mgtMongoDFSAddRemove.log</file>
-        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-          <maxFileSize>10MB</maxFileSize>
-        </triggeringPolicy> 
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%X{juuid}] [%X{jround}] %-5level %logger{36} -%msg%n</pattern>
-        </encoder>
-    </appender>
-	<appender name="grpc" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<filter class="ch.qos.logback.classic.filter.LevelFilter">
-			<level>INFO</level>
-			<onMatch>ACCEPT</onMatch>
-			<onMismatch>DENY</onMismatch>
-		</filter>
-        <Encoding>UTF-8</Encoding>
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">  
-			<FileNamePattern>logs/grpc/grpc.%d{yyyy-MM-dd}.log</FileNamePattern>  
-			<MaxHistory>30</MaxHistory>
-		</rollingPolicy>
-		<layout class="ch.qos.logback.classic.PatternLayout">  
-			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{20} - %msg%n</pattern>  
-		</layout>
-	</appender>
-	
+
 	<root level="info">
 		<appender-ref ref="stdout" />
 		<appender-ref ref="debuglog" />
 		<appender-ref ref="infolog" />
 		<appender-ref ref="warnlog" />
 		<appender-ref ref="errorlog" />
-		<appender-ref ref="grpclog" />
 	</root>
 
 	<logger name="com.jingoal" level="INFO" />
 	<logger name="org.springframework" level="INFO"/>
 	<logger name="io.grpc" level="INFO"></logger>
 
-	<!--  
+	<!--
 	<logger name="org.springframework" level="ERROR" />
 	<logger name="com.ibatis" level="WARN" />
-	<logger name="java.sql" level="WARN" />	
-	<logger name="org.apache.zookeeper" level="ERROR" />
-    <logger name="n.spy.memcached.MemcachedConnection" level="ERROR"/>-->
-    <logger name="/chenbin/grpc" level="INFO" additivity="false">
-		<appender-ref ref="stdout" />
-		<appender-ref ref="grpc" />
-	</logger>
+	<logger name="java.sql" level="WARN" />
+	-->
 </configuration>
