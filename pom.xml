@@ -138,8 +138,9 @@
           <pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc.version}:exe:${os.detected.classifier}</pluginArtifact>
 					<protoSourceRoot>./</protoSourceRoot>
 					<includes>
-						<param>src/**/*.proto</param>
-						<param>src/**/*.proto</param>
+						<!--<param>src/**/*.proto</param>-->
+						<!--<param>src/**/*.proto</param>-->
+						<!--<param>src/**/route_guide.proto</param>-->
 					</includes>
         </configuration>
         <executions>
