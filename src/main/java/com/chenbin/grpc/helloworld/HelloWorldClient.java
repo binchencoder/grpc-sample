@@ -1,4 +1,4 @@
-package com.jingoal.grpc.helloworld;
+package com.chenbin.grpc.helloworld;
 
 import java.util.concurrent.TimeUnit;
 
