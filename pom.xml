@@ -16,18 +16,20 @@
 		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
 		<java.version>1.8</java.version>
 
-		<!-- logger version settings -->
+		<!-- Logger Version Settings -->
 		<org.slf4j-version>1.6.3</org.slf4j-version>
 		<logback-version>1.1.2</logback-version>
 
-		<!-- testing version settings -->
+		<!-- Testing Version Settings -->
 		<org.testng-verison>6.8</org.testng-verison>
 		<org.hamcrest-version>1.1</org.hamcrest-version>
 
+		<!-- Spring Dependencies Version -->
 		<springframework.version>4.2.5.RELEASE</springframework.version>
 
 		<!-- CURRENT_GRPC_VERSION -->
-		<grpc.version>1.0.0-pre2</grpc.version>
+		<!-- Protobuffer + gRPC -->
+		<grpc.version>1.3.1</grpc.version>
 	</properties>
 
 	<dependencies>
@@ -68,7 +70,7 @@
 			<version>${springframework.version}</version>
 		</dependency>
 
-		<!-- grpc dependencies settings -->
+		<!-- gPRC Dependencies Settings -->
 		<dependency>
       <groupId>io.grpc</groupId>
       <artifactId>grpc-netty</artifactId>
@@ -85,7 +87,7 @@
       <version>${grpc.version}</version>
     </dependency>
 
-		<!-- logger dependencies settings -->
+		<!-- Logger Dependencies Settings -->
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
@@ -129,7 +131,7 @@
       <plugin>
         <groupId>org.xolstice.maven.plugins</groupId>
         <artifactId>protobuf-maven-plugin</artifactId>
-        <version>0.5.0</version>
+        <version>0.5.1</version>
         <configuration>
           <!--
             The version of protoc must match protobuf-java. If you don't depend on
@@ -139,6 +141,11 @@
           <protocArtifact>com.google.protobuf:protoc:3.0.0:exe:${os.detected.classifier}</protocArtifact>
           <pluginId>grpc-java</pluginId>
           <pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc.version}:exe:${os.detected.classifier}</pluginArtifact>
+					<protoSourceRoot>./</protoSourceRoot>
+					<includes>
+						<param>src/**/*.proto</param>
+						<param>src/**/*.proto</param>
+					</includes>
         </configuration>
         <executions>
           <execution>
