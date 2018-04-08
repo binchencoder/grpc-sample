@@ -1,0 +1,21 @@
+/target/
+/.settings/
+/.classpath
+/.project
+/logs/
+
+# for IntelliJ IDEA description files
+.idea
+*.iml
+*.idb
+target/
+logs/
+.DS_Store
+*.iml
+
+# generated code
+*/src/main/java/com/jingoal/vexillary/errors/
+*/src/main/java/com/jingoal/vexillary/grpc/
+*/src/main/java/com/jingoal/drive/configs/
+*/src/main/java/com/jingoal/drive/flags/
+*/src/main/java/com/jingoal/gateway/
