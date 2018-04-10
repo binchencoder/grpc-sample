@@ -7,6 +7,8 @@ import com.google.protobuf.Message;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Status;
+import io.grpc.netty.NegotiationType;
+import io.grpc.netty.NettyChannelBuilder;
 import io.grpc.stub.StreamObserver;
 import java.io.IOException;
 import java.util.List;
@@ -34,8 +36,9 @@ public class RouteGuideClient {
    * Construct client for accessing RouteGuide server at {@code host:port}.
    */
   public RouteGuideClient(String host, int port) {
-    this(ManagedChannelBuilder.forAddress(host, port).usePlaintext(true));
-  }
+//    this(ManagedChannelBuilder.forAddress(host, port).usePlaintext(true));
+    this(NettyChannelBuilder.forAddress(host, port).negotiationType(NegotiationType.PLAINTEXT));
+}
 
   /**
    * Construct client for accessing RouteGuide server using the existing channel.
