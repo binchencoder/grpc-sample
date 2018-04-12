@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 public class HelloWorldClient {
 
-  private static Logger log = LoggerFactory.getLogger(HelloWorldClient.class);
+  private static Logger logger = LoggerFactory.getLogger(HelloWorldClient.class);
 
   private ManagedChannel channel;
   private GreeterGrpc.GreeterBlockingStub blockingStub;
@@ -38,18 +38,18 @@ public class HelloWorldClient {
   }
 
   public void greet(String name) {
-    log.info("Will try to greet " + name + "...");
+    logger.info("Will try to greet " + name + "...");
     HelloWorldReq request = HelloWorldReq.newBuilder().setName(name).build();
     HelloWorldResp resp;
 
     try {
       resp = blockingStub.sayHello(request);
     } catch (StatusRuntimeException ex) {
-      log.error("RPC failed: {}", ex.getStatus());
+      logger.error("RPC failed: {}", ex.getStatus());
       return;
     }
 
-    log.info("Greeting, response message is: " + resp.getMessage());
+    logger.info("Greeting, response message is: " + resp.getMessage());
   }
 
   /**

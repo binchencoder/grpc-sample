@@ -20,7 +20,8 @@ public class AtomixNameResolverFactory extends NameResolver.Factory {
     String authority = uri.getAuthority();
     List<Address> cluster = Splitter.on(",").withKeyValueSeparator(':').split(authority)
         .entrySet().stream()
-        .map(entry -> new Address(entry.getKey(), entry.getValue() != null ? Integer.valueOf(entry.getValue()) : 12345))
+        .map(entry -> new Address(entry.getKey(),
+            entry.getValue() != null ? Integer.valueOf(entry.getValue()) : 12345))
         .collect(Collectors.toList());
     return new AtomixNameResolver(authority, cluster, uri.getPath().substring(1));
   }

@@ -69,8 +69,15 @@ public class AtomixNameResolver extends NameResolver {
       logger.info("Group of members, id:{}, metadata:{}.", member.id(), member.metadata());
     }
 
-    group.onJoin(m -> refreshServers(listener, group));
-    group.onLeave(m -> refreshServers(listener, group));
+    group.onJoin(m -> {
+      logger.info(m.id() + " joined the group!");
+      refreshServers(listener, group);
+    });
+
+    group.onLeave(m -> {
+      logger.info(m.id() + " left the group!");
+      refreshServers(listener, group);
+    });
 
     refreshServers(listener, group);
   }

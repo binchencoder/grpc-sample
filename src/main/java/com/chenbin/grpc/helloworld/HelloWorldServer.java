@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 public class HelloWorldServer {
 
-  private static Logger log = LoggerFactory.getLogger(HelloWorldServer.class);
+  private static Logger logger = LoggerFactory.getLogger(HelloWorldServer.class);
 
   /* The port on which the server should run */
   private final int port;
@@ -42,7 +42,7 @@ public class HelloWorldServer {
         .addService(new GreeterImpl())
         .build()
         .start();
-    log.info("Server started, listening on " + port);
+    logger.info("Server started, listening on " + port);
 
     // Register
     AtomixClient client = AtomixClient.builder().withTransport(new NettyTransport()).build();
@@ -50,7 +50,7 @@ public class HelloWorldServer {
     DistributedGroup group = atomix.getGroup("service-helloworld").get();
     // Add the address in metadata
     group.join(Collections.singletonMap("address", publishAddress)).thenAccept(member -> {
-      System.out.println("Joined with member ID: " + member.id());
+      logger.info("{} joined the group!", member.id());
     }).get();
 
     // SDH

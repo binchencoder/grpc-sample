@@ -4,7 +4,6 @@ import io.atomix.AtomixReplica;
 import io.atomix.catalyst.transport.Address;
 import io.atomix.catalyst.transport.netty.NettyTransport;
 import io.atomix.copycat.server.storage.Storage;
-import java.net.InetAddress;
 import java.util.UUID;
 
 /**
