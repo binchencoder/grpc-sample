@@ -30,6 +30,9 @@
 		<!-- CURRENT_GRPC_VERSION -->
 		<!-- Protobuffer + gRPC -->
 		<grpc.version>1.3.1</grpc.version>
+
+		<!-- Atomix: gRPC register and discovery -->
+		<atomix.version>1.0.0-rc9</atomix.version>
 	</properties>
 
 	<dependencies>
@@ -111,6 +114,13 @@
 			<artifactId>testng</artifactId>
 			<version>${org.testng.version}</version>
 			<scope>test</scope>
+		</dependency>
+
+		<!-- Atomix: gRPC register and discovery -->
+		<dependency>
+			<groupId>io.atomix</groupId>
+			<artifactId>atomix-all</artifactId>
+			<version>${atomix.version}</version>
 		</dependency>
 	</dependencies>
 

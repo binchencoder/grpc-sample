@@ -1,13 +1,13 @@
 package com.chenbin.grpc.helloworld;
 
-import java.util.concurrent.TimeUnit;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.chenbin.grpc.atomix.AtomixNameResolverFactory;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
+import io.grpc.util.RoundRobinLoadBalancerFactory;
+import java.util.concurrent.TimeUnit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HelloWorldClient {
 
@@ -22,8 +22,15 @@ public class HelloWorldClient {
   // 首先, 我们需要为stub创建一个grpc的channel, 指定我们连接服务端的地址和端口
   // 使用ManagedChannelBuilder方法来创建channel
   public HelloWorldClient(String host, int port) {
-    channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build();
-    blockingStub = GreeterGrpc.newBlockingStub(channel);
+//    channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build();
+    channel = ManagedChannelBuilder
+        .forTarget("atomix://localhost:12345/service-helloworld")
+        .nameResolverFactory(new AtomixNameResolverFactory())
+        .loadBalancerFactory(RoundRobinLoadBalancerFactory.getInstance())
+        .usePlaintext(true)
+        .build();
+    blockingStub = GreeterGrpc.newBlockingStub(channel)
+        /*.withDeadlineAfter(2000, TimeUnit.MILLISECONDS)*/;
   }
 
   public void shutdown() throws InterruptedException {
@@ -38,7 +45,7 @@ public class HelloWorldClient {
     try {
       resp = blockingStub.sayHello(request);
     } catch (StatusRuntimeException ex) {
-      log.error("RPC failed: {0}", ex.getStatus());
+      log.error("RPC failed: {}", ex.getStatus());
       return;
     }
 
