@@ -5,6 +5,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
 import io.grpc.util.RoundRobinLoadBalancerFactory;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,31 @@ public class HelloWorldClient {
         .usePlaintext(true)
         .build();
     blockingStub = GreeterGrpc.newBlockingStub(channel)
-        /*.withDeadlineAfter(2000, TimeUnit.MILLISECONDS)*/;
+        /*.withDeadlineAfter(20000, TimeUnit.MILLISECONDS)*/;
+  }
+
+  /**
+   * Greet server. If provided, the first element of {@code args} is the name to use in the
+   * greeting.
+   */
+  public static void main(String[] args) throws InterruptedException {
+    HelloWorldClient client = new HelloWorldClient("localhost", 50501);
+
+    CountDownLatch latch = new CountDownLatch(1);
+    try {
+      String user = "world";
+      for (int i = 0; i < 100; i++) {
+//        client.greet(user);
+        new Thread(() -> {
+          client.greet(user);
+        }).start();
+      }
+
+      latch.await();
+      latch.countDown();
+    } finally {
+      client.shutdown();
+    }
   }
 
   public void shutdown() throws InterruptedException {
@@ -39,6 +64,8 @@ public class HelloWorldClient {
 
   public void greet(String name) {
     logger.info("Will try to greet " + name + "...");
+
+    long start = System.currentTimeMillis();
     HelloWorldReq request = HelloWorldReq.newBuilder().setName(name).build();
     HelloWorldResp resp;
 
@@ -49,20 +76,7 @@ public class HelloWorldClient {
       return;
     }
 
-    logger.info("Greeting, response message is: " + resp.getMessage());
-  }
-
-  /**
-   * Greet server. If provided, the first element of {@code args} is the name to use in the
-   * greeting.
-   */
-  public static void main(String[] args) throws InterruptedException {
-    HelloWorldClient client = new HelloWorldClient("localhost", 50501);
-    try {
-      String user = "world";
-      client.greet(user);
-    } finally {
-      client.shutdown();
-    }
+    logger.info("Greeting, response message is: {}, cost time: {}. ", resp.getMessage(),
+        (System.currentTimeMillis() - start));
   }
 }

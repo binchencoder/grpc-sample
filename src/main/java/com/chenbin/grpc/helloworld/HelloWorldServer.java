@@ -30,6 +30,23 @@ public class HelloWorldServer {
     this.cluster = cluster;
   }
 
+  /**
+   * Main launches the server from the command line.
+   */
+  public static void main(String[] args) throws Exception {
+    List<Address> cluster = new ArrayList<>();
+    cluster.add(new Address("localhost", 12345));
+
+    final HelloWorldServer server1 = new HelloWorldServer(50053, cluster);
+    server1.start();
+
+    final HelloWorldServer server2 = new HelloWorldServer(50054, cluster);
+    server2.start();
+
+    server1.blockUntilShutdown();
+    server2.blockUntilShutdown();
+  }
+
   private void start() throws Exception {
     InetSocketAddress publishAddress = new InetSocketAddress("localhost", port);
 
@@ -77,23 +94,6 @@ public class HelloWorldServer {
     }
   }
 
-  /**
-   * Main launches the server from the command line.
-   */
-  public static void main(String[] args) throws Exception {
-    List<Address> cluster = new ArrayList<>();
-    cluster.add(new Address("localhost", 12345));
-
-    final HelloWorldServer server1 = new HelloWorldServer(50051, cluster);
-    server1.start();
-
-    final HelloWorldServer server2 = new HelloWorldServer(50052, cluster);
-    server2.start();
-
-    server1.blockUntilShutdown();
-    server2.blockUntilShutdown();
-  }
-
   // 我们的服务GreeterImpl继承了生成抽象类GreeterGrpc.GreeterImplBase, 实现了服务的所有方法
   private class GreeterImpl extends GreeterGrpc.GreeterImplBase {
 
@@ -101,6 +101,11 @@ public class HelloWorldServer {
     public void sayHello(HelloWorldReq request, StreamObserver<HelloWorldResp> responseObserver) {
       HelloWorldResp resp =
           HelloWorldResp.newBuilder().setMessage("hello" + request.getName()).build();
+      try {
+        Thread.sleep(10000L);
+      } catch (Exception e) {
+      }
+
       // 使用响应监视器的onNext方法返回HelloReply
       responseObserver.onNext(resp);
       // 使用onCompleted方法指定本次调用已经完成
