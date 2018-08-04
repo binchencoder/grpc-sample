@@ -1,5 +1,6 @@
 package com.chenbin.grpc.helloworld;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import io.atomix.Atomix;
 import io.atomix.AtomixClient;
 import io.atomix.catalyst.transport.Address;
@@ -12,6 +13,7 @@ import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import jdk.internal.cmm.SystemResourcePressureImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,6 +101,15 @@ public class HelloWorldServer {
 
     @Override
     public void sayHello(HelloWorldReq request, StreamObserver<HelloWorldResp> responseObserver) {
+      byte[] reqBytes = request.toByteArray();
+      System.out.println("Request bytes: " + reqBytes);
+      try {
+        HelloWorldReq parseReq = HelloWorldReq.parseFrom(reqBytes);
+        System.out.println("Parse request: " + parseReq);
+      } catch (InvalidProtocolBufferException e) {
+        e.printStackTrace();
+      }
+
       HelloWorldResp resp =
           HelloWorldResp.newBuilder().setMessage("hello" + request.getName()).build();
       try {
